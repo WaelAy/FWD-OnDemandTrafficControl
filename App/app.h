@@ -12,18 +12,26 @@
 #include "../ECUAL/LED driver/LED.h"
 
 //defining macros.
-#define Yellow 1
-#define  Red 2
-#define green 0
 
+
+/************************************************************************/
+/* Defining Enums.  */
+/************************************************************************/
+
+typedef enum carLights{Cgreen,Cyellow,Cred,Cerror} // car lights.
+carLights;
+typedef enum pedLights {Pred,Pyellow,Pgreen,Perror} // ped lights
+pedLights;
+typedef enum state {OK,Error} //enum to return process state.	
+state_t;
 //functions prototypes.
-void APP_init(); // to initialize our app.
-void APP_start(); // function to start our application.
-void pedestrianMode(uint8_t currLED,uint8_t *iteration,uint8_t *open_ped_led); // function to toggle pedestrian mode.
-uint8_t getCarLED(uint8_t iteration); // function returns the current car led.
-uint8_t getPedestrianLED(uint8_t iteration);// function returns current pedestrian led.
-void turnOnRequiredLEDs(uint8_t car_led,uint8_t ped_led); // to turn on pedestrian led and car led.
-void turnOffRequiredLEDs(); // turn off leds.
+state_t APP_init(); // to initialize our app.
+state_t APP_start(); // function to start our application.
+state_t pedestrianMode(uint8_t currLED,uint8_t *iteration,uint8_t *open_ped_led); // function to toggle pedestrian mode.
+carLights getCarLED(uint8_t iteration); // function returns the current car led.
+pedLights getPedestrianLED(uint8_t iteration);// function returns current pedestrian led.
+state_t turnOnRequiredLEDs(uint8_t car_led,uint8_t ped_led); // to turn on pedestrian led and car led.
+state_t turnOffRequiredLEDs();
 
 
 extern uint8_t iteration; // variable to hold current iteration.
