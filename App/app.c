@@ -9,7 +9,7 @@
 
 
 // function to initialize our interrupts and LEDs.
-void APP_init(){
+state_t APP_init(){
 		//initializing the interrupts.
 		init_interrupts();
 		//initializing the used LEDs.
@@ -21,12 +21,12 @@ void APP_init(){
 			LED_init(PortB,i);
 		}
 		
-
+	return OK;
 		
 }
 
 // main logic of our project.
-void APP_start(){
+state_t APP_start(){
 	
 	//flag for the pedestrian mode.
 	uint8_t pedestrian_flag = Off;
@@ -42,7 +42,7 @@ void APP_start(){
 		/************************************************************************/
 		/* if the next LED isn't the yellow one we will set this LED to On for 5 secs.  */
 		/************************************************************************/
-		if(currled!=Yellow){
+		if(currled!=Cyellow){
 			// Turning on the needed LEDs.
 			turnOnRequiredLEDs(currled,ped_led);
 			/************************************************************************/
@@ -53,7 +53,7 @@ void APP_start(){
 				//checking if the user triggered the PED mode each 100ms.
 				if(pedestrian_mode==ON&&pedestrian_flag==Off){
 					pedestrianMode(currled,&iteration,&pedestrian_flag);
-					
+				
 					if(currled==0||currled==1)
 							break;
 						
@@ -67,17 +67,17 @@ void APP_start(){
 			
 		}
 		// if the currLED to be open is the yellow one.
-		else if(currled==Yellow){
+		else if(currled==Cyellow){
 			// looping for 5 iterations each one will turn on yellow LEDs for 700ms and turn it off for 300ms.
 			for (uint8_t k = 0; k<5; k++){
 				
 				// LEDs open for 700ms.
 				turnOnRequiredLEDs(currled,ped_led);
+				// 7* 100 = 700ms.
 				for (uint8_t j = 0; j<7; j++)
 				{
 					if (pedestrian_mode==ON&&pedestrian_flag==Off)
 						pedestrianMode(currled,&iteration,&pedestrian_flag);				
-						
 					
 
 					delayms(100);
@@ -88,58 +88,65 @@ void APP_start(){
 			}
 		}
 	}
-
+	return OK;
 }
 
 // pedestrian mode logic.
-void pedestrianMode(uint8_t currLED,uint8_t *iteration,uint8_t *open_ped_led){
+state_t pedestrianMode(uint8_t currLED,uint8_t *iteration,uint8_t *open_ped_led){
 // we will change the iteration in the main logic based on the ped mode requirements.
-	// ped_flag is on.	
+	// ped_flag is on.
 	*open_ped_led = ON;
-	if(currLED==green)
-		*iteration = 0;
+	if(currLED==Cgreen)
+		*iteration = 0; // Next iteration is Yellow.
 	
-	else if(currLED==Yellow)
-		*iteration = 0;
+	else if(currLED==Cyellow)
+		*iteration = 1; // Next iteration is Red.
 
-	pedestrian_mode = Off;		
+	pedestrian_mode = Off;	
+	
+	return OK;	
 }
 	
 
 //function thats returns car LED number based on iteration.
-uint8_t getCarLED(uint8_t iteration){
+carLights getCarLED(uint8_t iteration){
 	if (iteration==0)
-		return 0;
+		return Cgreen;
 	else if (iteration==1||iteration==3)
-		return 1;
+		return Cyellow;
 	else if (iteration==2)
-		return 2;
+		return Cred;
 	else
-		return -1;	
+		return Cerror;	
 			
 }
 
 //function thats returns pedestrian LED number based on iteration.
-uint8_t getPedestrianLED(uint8_t iteration){
+pedLights getPedestrianLED(uint8_t iteration){
 	if (iteration==0)
-	return 2;
+	return Pgreen;
 	else if (iteration==1||iteration==3)
-	return 1;
+	return Pyellow;
 	else if (iteration==2)
-	return 0;
+	return Pred;
 	else
-	return -1;
+	return Perror;
 }
 
 //turns on LEDs on for cars and pedestrians based on the given LEDs.
-void turnOnRequiredLEDs(uint8_t car_led,uint8_t ped_led){
+state_t turnOnRequiredLEDs(uint8_t car_led,uint8_t ped_led){
+	
 	LED_on(PortB,ped_led);
 	LED_on(PortA,car_led);
+	
+	return OK;
 }
 
 
 //turns on LEDs on for cars and pedestrians.
-void turnOffRequiredLEDs(){
+state_t turnOffRequiredLEDs(){
+	
 	LEDs_off(PortA);
 	LEDs_off(PortB);
+	return OK;
 }
