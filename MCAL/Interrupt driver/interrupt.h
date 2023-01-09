@@ -28,11 +28,13 @@ void INT_VECT(void)
 //-----------------------------------------------------------------------
 //type defs.
 typedef unsigned char uint8_t;
+typedef enum INTERRUPT_State {intterupt_ok,interrupt_error} interruptState_t;
+
 
 extern uint8_t pedestrian_mode;
 
 
-void init_interrupts(); //function to initialize interrupts.
+interruptState_t init_interrupts(); //function to initialize interrupts.
 
 
 
