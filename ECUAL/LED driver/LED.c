@@ -9,21 +9,26 @@
 //function bodies.
 
 //To initialize LED pin port to output.
-void LED_init(uint8_t port_number,uint8_t pin_number){
+ledState_t LED_init(uint8_t port_number,uint8_t pin_number){
 	dio_init(port_number,pin_number,OUTPUT);
+	
+	return LED_OK;
 }
 
 // To turn on LED.
-void LED_on(uint8_t port_number,uint8_t pin_number){
+ledState_t LED_on(uint8_t port_number,uint8_t pin_number){
 	dio_write(port_number,pin_number,HIGH);
+	
+	return LED_OK;
 }
 
 // Turns off all LEDs on a port.
-void LEDs_off(uint8_t port_number){
+ ledState_t LEDs_off(uint8_t port_number){
 	
 	for (int i = 0; i<3;i++)
 		dio_write(port_number,i,LOW);
-	
+		
+	return LED_OK;
 }
 
 

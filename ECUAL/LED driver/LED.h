@@ -9,14 +9,16 @@
 #ifndef LED_H_
 
 // including our drivers.
-#include "../../MCAL/GPIO driver/DIO.h"
-#include "../../MCAL/Timer driver/timer.h"
-#include "../../MCAL/Interrupt driver/interrupt.h"
+#include "../../MCAL/DIO/DIO.h"
+#include "../../MCAL/timer/timer.h"
+#include "../../MCAL/Interrupt/interrupt.h"
+// enums.
+typedef enum LED_STATE {LED_ERROR,LED_OK} ledState_t;
 
 // function prototypes.
-void LED_init(uint8_t port_number,uint8_t pin_number); // to initialize led.
-void LED_on(uint8_t port_number,uint8_t pin_number); // to turn on led.
-void LEDs_off(uint8_t port_number); // to turn off led.
+ledState_t LED_init(uint8_t port_number,uint8_t pin_number); // to initialize led.
+ledState_t LED_on(uint8_t port_number,uint8_t pin_number); // to turn on led.
+ledState_t LEDs_off(uint8_t port_number); // to turn off led.
 
 
 
