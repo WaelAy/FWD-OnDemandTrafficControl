@@ -39,12 +39,13 @@
 # define PortD 'D'
 /********************************************/
 typedef unsigned char uint8_t;
+typedef enum DIO {DIO_OK,DIO_ERROR} dio_state;
 /* defining our functions prototypes. */
 
-void dio_init(uint8_t portNum,uint8_t pinNum, uint8_t direction); // function to initialize DIO pin.
-void dio_write(uint8_t portNum,uint8_t pinNum,uint8_t value); // function to set the pin's value.
-void dio_read(uint8_t portNum,uint8_t pinNum, uint8_t *value); // function to read the pin's value.
-void dio_toggle(uint8_t portNum,uint8_t pinNum); // function to toggle pin.
+dio_state dio_init(uint8_t portNum,uint8_t pinNum, uint8_t direction); // function to initialize DIO pin.
+dio_state dio_write(uint8_t portNum,uint8_t pinNum,uint8_t value); // function to set the pin's value.
+dio_state dio_read(uint8_t portNum,uint8_t pinNum, uint8_t *value); // function to read the pin's value.
+
 
 
 #endif /* DIO_H_ */
