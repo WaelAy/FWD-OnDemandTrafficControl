@@ -76,10 +76,12 @@ state_t APP_start(){
 				// 7* 100 = 700ms.
 				for (uint8_t j = 0; j<7; j++)
 				{
-					if (pedestrian_mode==ON&&pedestrian_flag==Off)
+					if (pedestrian_mode==ON&&pedestrian_flag==Off){
 						pedestrianMode(currled,&iteration,&pedestrian_flag);				
+						k=5; // to end this iteration.
+						break; // break this loop.
+					}
 					
-
 					delayms(100);
 				}
 				//turning off LEDs for 300ms.
@@ -100,7 +102,7 @@ state_t pedestrianMode(uint8_t currLED,uint8_t *iteration,uint8_t *open_ped_led)
 		*iteration = 0; // Next iteration is Yellow.
 	
 	else if(currLED==Cyellow)
-		*iteration = 1; // Next iteration is Red.
+		*iteration = 0; // Next iteration is Red.
 
 	pedestrian_mode = Off;	
 	
